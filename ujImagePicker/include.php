@@ -18,7 +18,7 @@ function ujImagePicker_meta() {
     $_tmp = array(
         'name'        => 'ImagePicker',
         'url'         => 'imagepicker',
-        'version'     => '0.9.0',
+        'version'     => '1.0.0',
         'developer'   => 'Ultrajam, &copy;' . strftime('%Y'),
         'description' => 'Provides an image picker and a multiple image picker as custom form fields.',
         'support'     => 'http://www.jamroom.net/phpBB2',
@@ -31,14 +31,19 @@ function ujImagePicker_meta() {
  * init
  */
 function ujImagePicker_init() {
-    // register the custom form field
+    // register the custom form fields
     jrCore_register_module_feature('jrCore','form_field','ujImagePicker','imagepicker');
     jrCore_register_module_feature('jrCore','form_field','ujImagePicker','imagepicker_multiple');
+
+    // Nice bootstrap docs 
+    jrCore_register_module_feature('ujBootstrap','docs','ujImagePicker', true, '3.0.0');
+    // Add button link for the docs
+    jrCore_register_module_feature('jrCore','tool_view','ujImagePicker','docs',array('ujImagePicker Docs','Documentation for the ujImagePicker module'));
     
     return true;
 }
 
-// test array
+// test array - this is only here for demo purposes
 function ujImagePicker_choose_a_kitten()
 {
     $arr = array(
@@ -50,7 +55,7 @@ function ujImagePicker_choose_a_kitten()
     );
     return $arr;
 }
-// test array with labels
+// test array with labels - this is only here for demo purposes
 function ujImagePicker_choose_a_labelled_kitten()
 {
     $arr = array(
@@ -63,7 +68,7 @@ function ujImagePicker_choose_a_labelled_kitten()
     return $arr;
 }
 
-// test array showing select
+// test array showing select - this is only here for demo purposes
 // function ujImagePicker_choose_a_kitten_show_select()
 // {
 //     $arr = array(
@@ -143,13 +148,13 @@ function ujImagePicker_form_field_imagepicker_display($_field,$_att = null)
                 $show_label = 'true';
             }
             if (isset($_field['value']) && strlen($_field['value']) > 0 && $_field['value'] == "{$k}") {
-                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> '. $v .'</option>'."\n";
+                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> </option>'."\n";
             }
             elseif ((!isset($_field['value']) || strlen($_field['value']) === 0) && (isset($_field['default']) && $_field['default'] == "{$k}")) {
-                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> '. $v .'</option>'."\n";
+                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> </option>'."\n";
             }
             else {
-                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'"> '. $v .'</option>'."\n";
+                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'"> </option>'."\n";
             }
         }
     }
@@ -281,17 +286,17 @@ function ujImagePicker_form_field_imagepicker_multiple_display($_field,$_att = n
                 $show_label = 'true';
             }
             if (isset($_field['value']) && is_array($_field['value']) && in_array($k,$_field['value'])) {
-                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> '. $v .'</option>'."\n";
+                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> </option>'."\n";
             }
             elseif (isset($_field['value']) && !is_array($_field['value']) && strlen($_field['value']) > 0 && $_field['value'] == "{$k}") {
-                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> '. $v .'</option>'."\n";
+                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> </option>'."\n";
             }
             // elseif ((!isset($_field['value']) || strlen($_field['value']) === 0) && (isset($_field['default']) && $_field['default'] == "{$k}")) {
             elseif (isset($_field['default']) && $_field['default'] == "{$k}") {
-                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> '. $v .'</option>'."\n";
+                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> </option>'."\n";
             }
             else {
-                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'"> '. $v .'</option>'."\n";
+                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'"> </option>'."\n";
             }
         }
     }
