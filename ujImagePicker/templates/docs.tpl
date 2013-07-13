@@ -60,6 +60,18 @@
 			'sucker'  =>    array('img_src'=>'http://placekitten.com/150/100','label'=>'dog in disguise')
 		);
 	</pre>
+	<p> 
+	    If you have a directory of images, use this directory scanning function with the directory path from the site root:
+	</p>
+	<pre>
+		ujImagePicker_get_images_from_dir(images/banksy/thumbs)
+	</pre>
+	<p> 
+	    The image name (or names if using multiple select) will be saved to the db. You will want to make sure your images are of a suitable size to show in the form.
+	</p>
+	
+	<p>If you want the select menu to show as well, make your array return this as one of the options"</p>
+	<pre>'show_select'    =>    true,</pre>
 
 	<p> 
 	    And thats about all there is. Simple really.

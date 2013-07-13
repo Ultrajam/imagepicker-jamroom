@@ -18,7 +18,7 @@ function ujImagePicker_meta() {
     $_tmp = array(
         'name'        => 'ImagePicker',
         'url'         => 'imagepicker',
-        'version'     => '1.0.0',
+        'version'     => '1.0.1',
         'developer'   => 'Ultrajam, &copy;' . strftime('%Y'),
         'description' => 'Provides an image picker and a multiple image picker as custom form fields.',
         'support'     => 'http://www.jamroom.net/phpBB2',
@@ -68,17 +68,37 @@ function ujImagePicker_choose_a_labelled_kitten()
     return $arr;
 }
 
+//------------------------------
+// read dir for images
+//------------------------------
+function ujImagePicker_get_images_from_dir($dir)
+{
+    global $_conf;
+    //$dir = 'banksy';
+    $directory = $_conf['jrCore_base_dir'].'/'.$dir;
+    //get all image files - extension parser
+    $images = glob("{$directory}/{*.gif,*.jpg,*.png}", GLOB_BRACE);
+    $out = array();
+    foreach($images as $image){
+        $image = str_replace($_conf['jrCore_base_dir'],$_conf['jrCore_base_url'],$image);
+        $key = substr(strrchr($image, '/'), 1); // with extension
+//        $key = substr(substr(strrchr($image, '/'), 1),0,-4); // no extension
+        $out[$key] = $image;
+    }
+    return $out;
+}
+
 // test array showing select - this is only here for demo purposes
-// function ujImagePicker_choose_a_kitten_show_select()
-// {
-//     $arr = array(
-//         'show_select'    =>    true,
-//         '1'    =>    'http://placekitten.com/120/100',
-//         '2'    =>    'http://placekitten.com/160/100',
-//         '3'    =>    'http://placekitten.com/110/100'
-//     );
-//     return $arr;
-// }
+function ujImagePicker_choose_a_kitten_show_select()
+{
+    $arr = array(
+        'show_select'    =>    true,
+        '1'    =>    'http://placekitten.com/120/100',
+        '2'    =>    'http://placekitten.com/160/100',
+        '3'    =>    'http://placekitten.com/110/100'
+    );
+    return $arr;
+}
 
 /**
  * @ignore
@@ -123,17 +143,23 @@ function ujImagePicker_form_field_imagepicker_display($_field,$_att = null)
     }
     $htm .= '>';
     if (isset($_field['options']) && !is_array($_field['options']) && strlen($_field['options']) > 0) {
-        // JSON encoded options
-        if (strpos($_field['options'],'{') === 0 || strpos($_field['options'],'[') === 0) {
-            $_field['options'] = json_decode($_field['options'],true);
+        if (strpos($_field['options'],'(') > 0) {
+            $_arr = explode('(',$_field['options']);
+            if (function_exists($_arr[0])) {
+                $_field['options'] = $_arr[0](rtrim($_arr[1],') ')); // call the function with dir
+            }
         }
         // function
         elseif (function_exists($_field['options'])) {
             $_field['options'] = $_field['options']();
         }
+        // JSON encoded options
+        if (!is_array($_field['options']) && ((strpos($_field['options'],'{') === 0 || strpos($_field['options'],'[') === 0))) {
+            $_field['options'] = json_decode($_field['options'],true);
+        }
     }
     $hide_select = 'true';
-    if (isset($_field['options']['show_select'])) {
+    if (isset($_field['options']['show_select']) && $_field['options']['show_select'] === true) {
         $hide_select = 'false';
         unset($_field['options']['show_select']);
     }
@@ -148,13 +174,13 @@ function ujImagePicker_form_field_imagepicker_display($_field,$_att = null)
                 $show_label = 'true';
             }
             if (isset($_field['value']) && strlen($_field['value']) > 0 && $_field['value'] == "{$k}") {
-                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> </option>'."\n";
+                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> '.$k.'</option>'."\n";
             }
             elseif ((!isset($_field['value']) || strlen($_field['value']) === 0) && (isset($_field['default']) && $_field['default'] == "{$k}")) {
-                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> </option>'."\n";
+                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'" selected="selected"> '.$k.'</option>'."\n";
             }
             else {
-                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'"> </option>'."\n";
+                $htm .= '<option'.$label.' data-img-src="'.$img_src.'" value="'. $k .'"> '.$k.'</option>'."\n";
             }
         }
     }
