@@ -1,11 +1,48 @@
 <?php
 /**
+ * Jamroom 5 ImagePicker module
+ *
+ * copyright 2003 - 2013
+ * by Ultrajam
+ *
+ * This Source Code Form is subject to the terms of the Mozilla Public
+ * License, v. 2.0.  Please see the included "license.html" file.
+ *
+ * This module may include works that are not developed by
+ * Ultrajam
+ * and are used under license - any licenses are included and
+ * can be found in the "contrib" directory within this module.
+ *
+ * Jamroom may use modules and skins that are licensed by third party
+ * developers, and licensed under a different license  - please
+ * reference the individual module or skin license that is included
+ * with your installation.
+ *
+ * This software is provided "as is" and any express or implied
+ * warranties, including, but not limited to, the implied warranties
+ * of merchantability and fitness for a particular purpose are
+ * disclaimed.  In no event shall the Jamroom Network be liable for
+ * any direct, indirect, incidental, special, exemplary or
+ * consequential damages (including but not limited to, procurement
+ * of substitute goods or services; loss of use, data or profits;
+ * or business interruption) however caused and on any theory of
+ * liability, whether in contract, strict liability, or tort
+ * (including negligence or otherwise) arising from the use of this
+ * software, even if advised of the possibility of such damage.
+ * Some jurisdictions may not allow disclaimers of implied warranties
+ * and certain statements in the above disclaimer may not apply to
+ * you as regards implied warranties; the other terms and conditions
+ * remain enforceable notwithstanding. In some jurisdictions it is
+ * not permitted to limit liability and therefore such limitations
+ * may not apply to you.
+ *
  * Jamroom 5 ujImagePicker module
  *
- * copyright 2013 by Ultrajam - All Rights Reserved
+ * copyright 2013 by SteveX @ Ultrajam - All Rights Reserved
  * http://www.ultrajam.net
- *
- * MIT License
+ * 
+ * The image-picker jQuery plugin is MIT licenced: Copyright (c) 2013 Rodrigo Vera
+ * https://github.com/rvera/image-picker
  */
 
 // make sure we are not being called directly
@@ -18,10 +55,10 @@ function ujImagePicker_meta() {
     $_tmp = array(
         'name'        => 'ImagePicker',
         'url'         => 'imagepicker',
-        'version'     => '1.0.1',
+        'version'     => '1.0.2',
         'developer'   => 'Ultrajam, &copy;' . strftime('%Y'),
         'description' => 'Provides an image picker and a multiple image picker as custom form fields.',
-        'support'     => 'http://www.jamroom.net/phpBB2',
+        'support'     => 'http://www.jamroom.net/ultrajam',
         'category'    => 'plugins'
     );
     return $_tmp;
@@ -31,15 +68,11 @@ function ujImagePicker_meta() {
  * init
  */
 function ujImagePicker_init() {
+
     // register the custom form fields
     jrCore_register_module_feature('jrCore','form_field','ujImagePicker','imagepicker');
     jrCore_register_module_feature('jrCore','form_field','ujImagePicker','imagepicker_multiple');
 
-    // Nice bootstrap docs 
-    jrCore_register_module_feature('ujBootstrap','docs','ujImagePicker', true, '3.0.0');
-    // Add button link for the docs
-    jrCore_register_module_feature('jrCore','tool_view','ujImagePicker','docs',array('ujImagePicker Docs','Documentation for the ujImagePicker module'));
-    
     return true;
 }
 
@@ -168,7 +201,7 @@ function ujImagePicker_form_field_imagepicker_display($_field,$_att = null)
         foreach ($_field['options'] as $k => $img_src) {
             $label = '';
             if (is_array($img_src)) {
-                // label data attached 
+                // label data attached
                 $label = ' data-img-label="'.$img_src['label'].'"';
                 $img_src = $img_src['img_src'];
                 $show_label = 'true';
@@ -203,6 +236,7 @@ function ujImagePicker_form_field_imagepicker_attributes()
 {
     return array('size','disabled','onfocus','onblur','onchange');
 }
+
 /**
  * @ignore
  * ujImagePicker_form_field_imagepicker_validate
@@ -306,7 +340,7 @@ function ujImagePicker_form_field_imagepicker_multiple_display($_field,$_att = n
         foreach ($_field['options'] as $k => $img_src) {
             $label = '';
             if (is_array($img_src)) {
-                // label data attached 
+                // label data attached
                 $label = ' data-img-label="'.$img_src['label'].'"';
                 $img_src = $img_src['img_src'];
                 $show_label = 'true';
@@ -335,6 +369,7 @@ function ujImagePicker_form_field_imagepicker_multiple_display($_field,$_att = n
     jrCore_create_page_element('page',$_field);
     return true;
 }
+
 /**
  * @ignore
  * Additional form field HTML attributes that can be passed in via the form
@@ -344,6 +379,7 @@ function ujImagePicker_form_field_imagepicker_multiple_attributes()
 {
     return array('size','disabled','onfocus','onblur','onchange');
 }
+
 /**
  * @ignore
  * ujImagePicker_form_field_imagepicker_multiple_validate

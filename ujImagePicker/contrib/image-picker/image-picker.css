@@ -1,3 +1,4 @@
+
 ul.thumbnails.image_picker_selector {
   overflow: auto;
   list-style-image: none;
@@ -6,15 +7,26 @@ ul.thumbnails.image_picker_selector {
   padding: 0px;
   margin: 0px;
 }
+ul.thumbnails.image_picker_selector ul {
+    overflow: auto;
+    list-style-image: none;
+    list-style-position: outside;
+    list-style-type: none;
+    padding: 0px;
+    margin: 0px;     
+}
+ul.thumbnails.image_picker_selector li.group_title {
+    float: none;
+}
 ul.thumbnails.image_picker_selector li {
-  margin: 0px 12px 12px 0px;
-  float: left;
+	margin: 0px 12px 12px 0px;
+	float: left;
 }
 ul.thumbnails.image_picker_selector li .thumbnail {
   background: #ccc; /*ULTRA ADDED*/
-  padding: 6px;
-  border: 1px solid #dddddd;
+	padding: 6px;
+	border: 1px solid #dddddd;
 }
 ul.thumbnails.image_picker_selector li .thumbnail.selected {
-  background: #0088cc;
+	background: #0088cc;
 }
